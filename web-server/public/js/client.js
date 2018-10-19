@@ -97,7 +97,7 @@ function tip(type, name) {
 
 // init user list
 function initUserList(data) {
-	users = data.users;
+  users = data.users;
 	for(var i = 0; i < users.length; i++) {
 		var slElement = $(document.createElement("option"));
 		slElement.attr("value", users[i]);
@@ -192,8 +192,10 @@ $(document).ready(function() {
 	//update user list
 	pomelo.on('onAdd', function(data) {
 		var user = data.user;
-		tip('online', user);
-		addUser(user);
+    tip('online', user);
+    if(user !== username) {
+      addUser(user);
+    }
 	});
 
 	//update user list
