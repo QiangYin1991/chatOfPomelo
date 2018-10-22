@@ -1,4 +1,17 @@
-var pomelo = require('pomelo');
+const pomelo = require('pomelo');
+const dispatcher = require('./app/util/dispatcher');
+
+const chatRoute = function (session, msg, app, cb) {
+  const chatServers = app.getServersByType('chat');
+
+  if (!chatServers || chatServers.length === 0) {
+    cb(new Error('can not find chat servers.'));
+    return;
+  }
+
+  const res = dispatcher.dispatch(session.get('rid'), chatServers);
+  cb(null, res.id);
+};
 
 /**
  * Init app for client.
@@ -22,6 +35,11 @@ app.configure('production|development', 'gate', function () {
   {
     connector   : pomelo.connectors.hybridconnector,
   });
+});
+
+app.configure('production|development', function () {
+  app.route('chat', chatRoute);
+  app.filter(pomelo.timeout());
 });
 
 // start app

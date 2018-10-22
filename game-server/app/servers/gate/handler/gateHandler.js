@@ -1,3 +1,5 @@
+const dispatcher = require('../../../util/dispatcher');
+
 module.exports = function (app) {
   return new Handler(app);
 };
@@ -28,6 +30,6 @@ handler.queryEntry = function (msg, session, next) {
     return;
   }
 
-  let res = connectors[0];
+  let res = dispatcher.dispatch(uid, connectors);
   next(null, {code : 200, host : res.host, port : res.clientPort});
 };

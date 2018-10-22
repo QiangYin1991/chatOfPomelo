@@ -58,7 +58,7 @@ chatRemote.get = function (name, flag) {
  * @param {String} sid server id
  * @param {String} name channel name
  */
-chatRemote.kick = function (uid, sid, name) {
+chatRemote.kick = function (uid, sid, name, cb) {
   const channel = this.channelService.getChannel(name ,false);
   if (!!channel) {
     channel.leave(uid, sid);
@@ -69,4 +69,5 @@ chatRemote.kick = function (uid, sid, name) {
     user  : username
   };
   channel.pushMessage(params);
+  cb();
 };
