@@ -1,5 +1,6 @@
 const pomelo = require('pomelo');
 const dispatcher = require('./app/util/dispatcher');
+const abuseFilter = require('./app/servers/chat/filter/abuseFilter');
 
 const chatRoute = function (session, msg, app, cb) {
   const chatServers = app.getServersByType('chat');
@@ -39,7 +40,11 @@ app.configure('production|development', 'gate', function () {
 
 app.configure('production|development', function () {
   app.route('chat', chatRoute);
-  app.filter(pomelo.timeout());
+  //app.filter(pomelo.timeout());
+});
+
+app.configure('production|development', 'chat', function () {
+  app.filter(abuseFilter());
 });
 
 // start app
